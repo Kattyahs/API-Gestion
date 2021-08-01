@@ -4,10 +4,10 @@ var router = express.Router();
 
 /* GET home page. */
 
-/*router.get('/', async function(req, res, next) {
+router.get('/', async function(req, res, next) {
     const proyectos = await Proyecto.findAll();
     res.json(proyectos)
-});*/
+});
 //C
 router.post('/', async function(req, res, next) {
     const proyecto = await Proyecto.create(req.body);
@@ -43,7 +43,7 @@ router.delete('/:proyectoId', async function(req, res, next) {
 });
 //Read + Maker
 
-router.get('/search/Maker/:idMaker', async function(req, res, next) {
+router.get('/:idMaker', async function(req, res, next) {
     const proyectos = await Proyecto.findAll({
         where: {id_maker : req.params.idMaker}
     });

@@ -24,7 +24,7 @@ router.delete('/:sesionId', async function(req, res, next) {
     
 });
 router.put('/:sesionId/:stateSesion', async function(req, res, next) {
-    let response = await Maquina.update({cumplida:req.params.stateSesion},{
+    let response = await Sesion.update({cumplida:req.params.stateSesion},{
         where: {idSesion :req.params.sesionId}
     });
     if(response==0){
@@ -33,6 +33,17 @@ router.put('/:sesionId/:stateSesion', async function(req, res, next) {
         res.status(200).send({success: "se ha actualizado el estado de la sesion"})
     }
 });
+router.get('/:sesionId', async function(req, res, next) {
+    const reservas = await Sesion.findAll({
+        where: {idSesion : req.params.sesionId}
+    });
+    if(reservas==0){
+        res.status(404).send({failed: "No existe la reserva especificada"})
+    }else{
+        res.json(reservas)
+    }
+});
+
 
 
 module.exports = router;

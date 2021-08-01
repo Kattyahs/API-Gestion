@@ -36,7 +36,7 @@ router.get('/', async function(req, res, next) {
     res.json(reservas)
 });
 
-router.get('/search/id/:reservaId', async function(req, res, next) {
+router.get('/:reservaId', async function(req, res, next) {
     const reservas = await Reserva.findAll({
         where: {id_reserva : req.params.reservaId}
     });
