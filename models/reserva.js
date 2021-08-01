@@ -18,6 +18,13 @@ module.exports = (sequelize,type) => {
             type: type.INTEGER,
             allowNull: false
         
-        }
+        },
+        hora_ingreso:{
+            type: type.TIME,
+            allowNull: false
+        
+        },
+        hora_termino: type.TIME,
+        tipo_material:type.STRING
     })
 }   
