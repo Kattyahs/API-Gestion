@@ -1,11 +1,11 @@
 module.exports = (sequelize,type) => {
     return sequelize.define('sesiones',{
-        idSesion:{
+        id_Sesion:{
             type: type.INTEGER,
             primaryKey: true,
             autoIncrement: true
         },
-        idProyecto:{
+        id_Proyecto:{
             type: type.INTEGER,
             allowNull: false
         },
