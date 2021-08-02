@@ -24,9 +24,9 @@ router.put('/:proyectoId', async function(req, res, next) {
         where: {id :req.params.proyectoId}
     });
     if(response==0){
-        res.status(404).send({failed: "No existe la maquina especificada"})
+        res.status(404).send({failed: "No existe el proyecto especificado"})
     }else{
-        res.status(200).send({success: "se ha actualizado el estado de la maquina"})
+        res.status(200).send({success: "se ha actualizado el proyecto especificado"})
     }
 });
 //D
@@ -35,9 +35,9 @@ router.delete('/:proyectoId', async function(req, res, next) {
         where: {id :req.params.proyectoId}
     });
     if(response==0){
-        res.status(404).send({failed: "No existe la maquina especificada"})
+        res.status(404).send({failed: "No existe el proyecto especificado"})
     }else{
-        res.status(200).send({success: "se ha borrado la maquina"})
+        res.status(200).send({success: "se ha borrado el proyecto especificado"})
     }
     
 });

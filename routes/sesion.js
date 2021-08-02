@@ -43,7 +43,4 @@ router.get('/:sesionId', async function(req, res, next) {
         res.json(reservas)
     }
 });
-
-
-
 module.exports = router;
