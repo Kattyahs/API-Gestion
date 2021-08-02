@@ -35,7 +35,7 @@ router.put('/:sesionId/:stateSesion', async function(req, res, next) {
 });
 router.get('/:sesionId', async function(req, res, next) {
     const reservas = await Sesion.findAll({
-        where: {idSesion : req.params.sesionId}
+        where: {id_Sesion : req.params.sesionId}
     });
     if(reservas==0){
         res.status(404).send({failed: "No existe la reserva especificada"})
