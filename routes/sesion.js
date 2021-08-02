@@ -14,7 +14,7 @@ router.post('/', async function(req, res, next) {
 });
 router.delete('/:sesionId', async function(req, res, next) {
     let response = await Sesion.destroy({
-        where: {idSesion :req.params.sesionId}
+        where: {id_Sesion :req.params.sesionId}
     });
     if(response==0){
         res.status(404).send({failed: "No existe la sesion especificada"})
@@ -25,7 +25,7 @@ router.delete('/:sesionId', async function(req, res, next) {
 });
 router.put('/:sesionId/:stateSesion', async function(req, res, next) {
     let response = await Sesion.update({cumplida:req.params.stateSesion},{
-        where: {idSesion :req.params.sesionId}
+        where: {id_Sesion :req.params.sesionId}
     });
     if(response==0){
         res.status(404).send({failed: "No existe la sesion especificada"})
