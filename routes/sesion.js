@@ -1,7 +1,7 @@
 var express = require('express');
 const {Sesion} = require('../db')
 var router = express.Router();
-
+const fetch = require("node-fetch");
 /* GET home page. */
 
 router.get('/', async function(req, res, next) {
@@ -9,8 +9,19 @@ router.get('/', async function(req, res, next) {
     res.json(sesion)
 });
 router.post('/', async function(req, res, next) {
-    const machine = await Sesion.create(req.body);
-    res.json(machine)
+
+    const options = {method: 'GET', headers: {Accept: 'application/json'}};
+
+    let proyectVerification = await fetch('https://api-gestion-production-fob3.up.railway.app/proyectos/verify/'+req.body.id_Proyecto, options);
+    
+    if(proyectVerification.status==200){
+        const machine = await Sesion.create(req.body);
+        res.json(machine)
+    }else{
+        res.status(404).send({failed: "No existe el proyecto indicado"})
+    }
+
+    
 });
 router.delete('/:sesionId', async function(req, res, next) {
     let response = await Sesion.destroy({
@@ -43,4 +54,7 @@ router.get('/:sesionId', async function(req, res, next) {
         res.json(reservas)
     }
 });
+
+
+
 module.exports = router;

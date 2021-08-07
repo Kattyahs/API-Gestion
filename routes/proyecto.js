@@ -50,7 +50,17 @@ router.get('/:idMaker', async function(req, res, next) {
     res.json(proyectos)
 });
 
+router.get('/verify/:idProyecto', async function(req, res, next) {
+    const proyectos = await Proyecto.findAll({
+        where: {id : req.params.idProyecto}
+    });
+    if(proyectos.length == 0){
+        res.status(404).send({failed: "No existe el proyecto"})
+    }else{
+        res.status(200).send({success: "Si existe el proyecto"})
+    }
 
+});
 
 
 module.exports = router;
