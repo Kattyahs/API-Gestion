@@ -1,13 +1,28 @@
 var express = require('express');
 var router = express.Router();
-
+const fetch = require("node-fetch");
 const {Reserva} = require('../db')
 
-router.post('/', async function(req, res, next) {
+/*router.post('/', async function(req, res, next) {
     const reservas = await Reserva.create(req.body);
     res.json(reservas)
-});
+});*/
 
+router.post('/', async function(req, res, next) {
+
+    const options = {method: 'GET', headers: {Accept: 'application/json'}};
+
+    let sesionVerification = await fetch('https://api-gestion-production-fob3.up.railway.app/sesiones/verify/'+req.body.id_sesion, options);
+    
+    if(sesionVerification.status==200){
+        const reserva = await Reserva.create(req.body);
+        res.json(reserva)
+    }else{
+        res.status(404).send({failed: "No existe la sesión indicado"})
+    }
+
+    
+});
 router.put('/:reservaId', async function(req, res, next) {
     let response = await Reserva.update(req.body,{
         where: {id_reserva :req.params.reservaId}

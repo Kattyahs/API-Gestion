@@ -15,8 +15,8 @@ router.post('/', async function(req, res, next) {
     let proyectVerification = await fetch('https://api-gestion-production-fob3.up.railway.app/proyectos/verify/'+req.body.id_Proyecto, options);
     
     if(proyectVerification.status==200){
-        const machine = await Sesion.create(req.body);
-        res.json(machine)
+        const sesion = await Sesion.create(req.body);
+        res.json(sesion)
     }else{
         res.status(404).send({failed: "No existe el proyecto indicado"})
     }
@@ -54,7 +54,17 @@ router.get('/:sesionId', async function(req, res, next) {
         res.json(reservas)
     }
 });
+router.get('/verify/:idSesion', async function(req, res, next) {
+    const sesiones = await Sesion.findAll({
+        where: {id_Sesion : req.params.idSesion}
+    });
+    if(sesiones.length == 0){
+        res.status(404).send({failed: "No existe el proyecto"})
+    }else{
+        res.status(200).send({success: "Si existe el proyecto"})
+    }
 
+});
 
 
 module.exports = router;
