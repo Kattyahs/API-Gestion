@@ -12,6 +12,10 @@ module.exports = (sequelize,type) => {
         cumplida:{
             type: type.BOOLEAN,
             allowNull: false
+        },
+        tipo_maquina:{
+            type: type.INTEGER,
+            allowNull: false
         }
     })
 }   
