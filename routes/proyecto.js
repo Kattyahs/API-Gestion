@@ -10,6 +10,7 @@ router.get('/', async function(req, res, next) {
 });
 //C
 router.post('/', async function(req, res, next) {
+    console.log(req.body);
     const proyecto = await Proyecto.create(req.body);
     res.json(proyecto)
 });
