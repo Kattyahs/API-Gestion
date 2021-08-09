@@ -7,11 +7,11 @@ module.exports = (sequelize,type) => {
         },
         id_maker:{
             type: type.INTEGER,
-            allowNull: false
+            allowNull: true
         },
         nombre:{
             type: type.STRING,
-            allowNull: false
+            allowNull: true
         
         },
         descripcion: type.STRING,
