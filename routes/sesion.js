@@ -12,7 +12,7 @@ router.post('/', async function(req, res, next) {
 
     const options = {method: 'GET', headers: {Accept: 'application/json'}};
 
-    let proyectVerification = await fetch('https://api-gestion-production-fob3.up.railway.appgit /proyectos/verify/'+req.body.id_Proyecto, options);
+    let proyectVerification = await fetch('https://api-gestion-production-fob3.up.railway.app/proyectos/verify/'+req.body.id_Proyecto, options);
     
     if(proyectVerification.status==200){
         const sesion = await Sesion.create(req.body);

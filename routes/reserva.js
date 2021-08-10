@@ -21,8 +21,6 @@ router.post('/', async function(req, res, next) {
         res.status(404).send({failed: "No existe la sesión indicado"})
     }
 
-    
-});
 router.put('/:reservaId', async function(req, res, next) {
     let response = await Reserva.update(req.body,{
         where: {id_reserva :req.params.reservaId}
