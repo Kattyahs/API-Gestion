@@ -1,6 +1,7 @@
 var express = require('express');
 const {Proyecto} = require('../db')
 var router = express.Router();
+const fetch = require("node-fetch");
 
 /* GET home page. */
 
@@ -10,9 +11,22 @@ router.get('/', async function(req, res, next) {
 });
 //C
 router.post('/', async function(req, res, next) {
-    console.log(req.body);
-    const proyecto = await Proyecto.create(req.body);
-    res.json(proyecto)
+    const options = {method: 'GET', headers: {Accept: 'application/json'}};
+
+
+    let personVerification = await fetch('http://ec2-3-13-79-51.us-east-2.compute.amazonaws.com:8081/assistant/rut?rut='+req.body.id_maker, options);
+    
+    if(personVerification.status == 200){
+ 
+        const projectCreation = await Proyecto.create(req.body);
+        res.json(projectCreation)
+        
+
+    }else{
+        res.status(404).send({failed: "No existe la persona indicada"})
+    }
+
+   
 });
 //R
 router.get('/', async function(req, res, next) {
