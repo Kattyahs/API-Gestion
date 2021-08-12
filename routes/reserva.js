@@ -9,22 +9,43 @@ const {Reserva} = require('../db')
 });*/
 
 router.post('/', async function(req, res, next) {
-
+    //_______________________
     const options = {method: 'GET', headers: {Accept: 'application/json'}};
-
-    let sesionVerification = await fetch('https://api-gestion-production-fob3.up.railway.app/sesiones/verify/'+req.body.id_sesion, options);
     
-    if(sesionVerification.status==200){
-        if(req.body.hora_ingreso.length == 8 && req.body.hora_termino.length == 8 ){
-            const reserva = await Reserva.create(req.body);
-            res.json(reserva)
-        }else{
-            res.status(404).send({failed: "Mal formato fecha"})
-        }
+    let machineVerification = await fetch('http://3.235.42.11:3000/maquina/'+req.body.id_maquina, options)    
+    
+    let json = Object.assign({},req.body)
+    json.id_sesion = parseInt(json.id_sesion) 
+    json.id_maquina = parseInt(json.id_maquina)
+    
+    const create = {
+        method: 'POST',
+        headers: {Accept: 'application/json', 'Content-Type': 'application/json'},
+        body: JSON.stringify(json)
+      };
+    
+    if(machineVerification.status==200){
+        const options2 = {method: 'GET', headers: {Accept: 'application/json'}};
+        let sesionVerification = await fetch('https://api-gestion-production-fob3.up.railway.app/sesiones/verify/'+req.body.id_sesion, options2);
         
-    }else{
-        res.status(404).send({failed: "No existe la sesión indicado"})
+        if(sesionVerification.status==200){
+            if(req.body.hora_ingreso.length == 8 && req.body.hora_termino.length == 8 ){
+                const reserva = await Reserva.create(req.body);
+                res.json(reserva)
+            }else{
+                res.status(404).send({failed: "Mal formato hora de ingreso o termino, ejemplo correcto: 18:00:00"})
+            }
+            
+        }else{
+            res.status(404).send({failed: "No existe la sesión indicada"})
+        }
     }
+    else{
+       res.status(404).send({failed: "No existe la máquina indicada"})
+    }
+    //_______________________
+
+    
 });
 router.put('/:reservaId', async function(req, res, next) {
     let response = await Reserva.update(req.body,{
