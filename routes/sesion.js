@@ -11,16 +11,33 @@ router.get('/', async function(req, res, next) {
 router.post('/', async function(req, res, next) {
 
     const options = {method: 'GET', headers: {Accept: 'application/json'}};
-
-    let proyectVerification = await fetch('https://api-gestion-production-fob3.up.railway.app/proyectos/verify/'+req.body.id_Proyecto, options);
     
-    if(proyectVerification.status==200){
-        const sesion = await Sesion.create(req.body);
-        res.json(sesion)
-    }else{
-        res.status(404).send({failed: "No existe el proyecto indicado"})
-    }
+    let tipeMachineVerification = await fetch('http://3.235.42.11:3000/tipo_maquina/'+req.body.tipo_maquina, options)    
+    
+    
+    if(tipeMachineVerification.status==200){
 
+        let json = Object.assign({},req.body)
+        json.id_Projecto = parseInt(json.id_Projecto) 
+        json.tipo_maquina = parseInt(json.tipo_maquina)
+        
+        const create = {
+            method: 'POST',
+            headers: {Accept: 'application/json', 'Content-Type': 'application/json'},
+            body: JSON.stringify(json)
+        };
+
+        let sessionCreation = await fetch('https://api-gestion-production-fob3.up.railway.app/sesiones/', create);
+        if(sessionCreation.status==200){
+            res.json(sessionCreation)
+        }else{
+            console.log(sessionCreation)
+            res.status(404).send({failed: "Error creando sesion"})
+        }
+    }
+    else{
+       res.status(404).send({failed: "No existe el tipo de maquina indicado"})
+    }
     
 });
 router.delete('/:sesionId', async function(req, res, next) {
