@@ -14,15 +14,7 @@ router.post('/', async function(req, res, next) {
     
     let machineVerification = await fetch('http://3.235.42.11:3000/maquina/'+req.body.id_maquina, options)    
     
-    let json = Object.assign({},req.body)
-    json.id_sesion = parseInt(json.id_sesion) 
-    json.id_maquina = parseInt(json.id_maquina)
-    
-    const create = {
-        method: 'POST',
-        headers: {Accept: 'application/json', 'Content-Type': 'application/json'},
-        body: JSON.stringify(json)
-      };
+
     
     if(machineVerification.status==200){
         const options2 = {method: 'GET', headers: {Accept: 'application/json'}};
