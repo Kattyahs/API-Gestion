@@ -15,8 +15,13 @@ router.post('/', async function(req, res, next) {
     let sesionVerification = await fetch('https://api-gestion-production-fob3.up.railway.app/sesiones/verify/'+req.body.id_sesion, options);
     
     if(sesionVerification.status==200){
-        const reserva = await Reserva.create(req.body);
-        res.json(reserva)
+        if(req.body.hora_ingreso.length == 8 && req.body.hora_termino.length == 8 ){
+            const reserva = await Reserva.create(req.body);
+            res.json(reserva)
+        }else{
+            res.status(404).send({failed: "Mal formato fecha"})
+        }
+        
     }else{
         res.status(404).send({failed: "No existe la sesión indicado"})
     }
