@@ -16,24 +16,18 @@ router.post('/', async function(req, res, next) {
     
     
     if(tipeMachineVerification.status==200){
-
-        let json = Object.assign({},req.body)
-        json.id_Projecto = parseInt(json.id_Projecto) 
-        json.tipo_maquina = parseInt(json.tipo_maquina)
+        const options2 = {method: 'GET', headers: {Accept: 'application/json'}};
+        let projectVerification = await fetch('https://api-gestion-production-fob3.up.railway.app/proyectos/verify/'+req.body.id_Proyecto, options2);
         
-        const create = {
-            method: 'POST',
-            headers: {Accept: 'application/json', 'Content-Type': 'application/json'},
-            body: JSON.stringify(json)
-        };
-
-        let sessionCreation = await fetch('https://api-gestion-production-fob3.up.railway.app/sesiones/', create);
-        if(sessionCreation.status==200){
+        if(projectVerification.status==200){
+            let sessionCreation = await Sesion.create(req.body)
             res.json(sessionCreation)
+            
         }else{
-            console.log(sessionCreation)
-            res.status(404).send({failed: "Error creando sesion"})
+            res.status(404).send({failed: "No existe el proyecto indicado"})
         }
+             
+
     }
     else{
        res.status(404).send({failed: "No existe el tipo de maquina indicado"})
